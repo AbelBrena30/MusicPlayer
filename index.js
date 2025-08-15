@@ -126,6 +126,87 @@ function renderSongList() {
 renderSongList();
 
 // --------------------------
+//  Subir archivo mp3
+// --------------------------
+
+const uploadBtn = document.getElementById("upload-btn");
+const uploadInput = document.getElementById("upload-mp3");
+const uploadImg = document.getElementById("upload-img");
+
+const previewImgContainer = document.getElementById("preview-img-container");
+const previewImg = document.getElementById("preview-img");
+
+uploadBtn.addEventListener("click", () => {
+    previewImgContainer.style.display = "none";
+    previewImg.src = "";
+    uploadInput.value = "";
+    uploadImg.value = "";
+    uploadInput.click();
+});
+
+// Cuando se selecciona el mp3, pedir la imagen
+
+uploadInput.addEventListener("change", (e) => {
+    const file = e.target.files[0];
+    if (file && file.type.startsWith("audio/")) {
+        // Guardar el audio temporalmente y pedir la imagen
+        uploadImg.onchange = (ev) => {
+            const imgFile = ev.target.files[0];
+            let coverUrl = "assets/1.jpg";
+            if (imgFile && imgFile.type.startsWith("image/")) {
+                coverUrl = URL.createObjectURL(imgFile);
+                previewImg.src = coverUrl;
+                previewImgContainer.style.display = "block";
+            } else {
+
+                
+                previewImg.src = "";
+                previewImgContainer.style.display = "none";
+            }
+            // Esperar 1 segundo para que el usuario vea la imagen antes de agregar la canción
+            setTimeout(() => {
+                const url = URL.createObjectURL(file);
+                const newSong = {
+                    path: url,
+                    displayName: file.name.replace(/\.[^.]+$/, ""),
+                    cover: coverUrl,
+                    artist: "Archivo subido",
+                };
+                songs.push(newSong);
+                musicIndex = songs.length - 1;
+                loadMusic(newSong);
+                playMusic();
+                renderSongList();
+                previewImgContainer.style.display = "none";
+            }, 1000);
+        };
+        uploadImg.click();
+    } else {
+        alert("Por favor selecciona un archivo de audio válido");
+    }
+});
+
+uploadInput.addEventListener("change", (e) => {
+    const file = e.target.files[0];
+    if (file && file.type === "audio/mp3") {
+        const url = URL.createObjectURL(file);
+        const newSong = {
+            path: url,
+            displayName: file.name.replace(/\.mp3$/i, ""),
+            cover: "assets/1.jpg", // Puedes cambiar esto por una imagen genérica o dejar que el usuario suba una
+            artist: "Archivo subido",
+        };
+        songs.push(newSong);
+        musicIndex = songs.length - 1;
+        loadMusic(newSong);
+        playMusic();
+        renderSongList();
+    } else {
+        alert("Por favor selecciona un archivo .mp3 válido");
+    }
+});
+
+// --------------------------
 //  Swipe en la imagen para cambiar de canción
 // --------------------------
 let startX = null;
