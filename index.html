@@ -28,7 +28,7 @@
             <!-- Lista de selección de canciones -->
             <div class="song-list" id="song-list"></div>
 
-            <!-- Subir archivo mp3 -->
+            <!-- Subir archivo de audio -->
             <div class="upload-container">
                 <input
                     type="file"
@@ -36,30 +36,7 @@
                     accept="audio/*"
                     style="display: none"
                 />
-                <input
-                    type="file"
-                    id="upload-img"
-                    accept="image/*"
-                    style="display: none"
-                />
-                <button id="upload-btn">Subir canción (.mp3) y portada</button>
-                <div
-                    id="preview-img-container"
-                    style="display: none; margin-top: 10px; text-align: center"
-                >
-                    <span style="color: #fff">Vista previa de portada:</span
-                    ><br />
-                    <img
-                        id="preview-img"
-                        src=""
-                        style="
-                            max-width: 120px;
-                            max-height: 120px;
-                            border-radius: 10px;
-                            margin-top: 5px;
-                        "
-                    />
-                </div>
+                <button id="upload-btn">Subir canción</button>
             </div>
 
             <div class="player-progress" id="player-progress">
