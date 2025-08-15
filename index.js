@@ -11,6 +11,7 @@ const image = document.getElementById("cover"),
     background = document.getElementById("bg-img"),
     volumeSlider = document.getElementById("volume-slider"); // <- añadimos el volumen aquí
 
+const volumePercent = document.getElementById("volume-percent");
 const music = new Audio();
 
 let songs = [
@@ -102,6 +103,13 @@ playerProgress.addEventListener("click", setProgressBar);
 // --------------------------
 volumeSlider.addEventListener("input", (e) => {
     music.volume = e.target.value;
+    const percent = Math.round(music.volume * 100);
+    volumePercent.textContent = `${percent}%`;
+    volumePercent.style.display = "block";
+    clearTimeout(volumePercent._hideTimeout);
+    volumePercent._hideTimeout = setTimeout(() => {
+        volumePercent.style.display = "none";
+    }, 1500);
 });
 
 // Cargar la primera canción al inicio
@@ -113,6 +121,9 @@ loadMusic(songs[musicIndex]);
 const songListDiv = document.getElementById("song-list");
 
 function renderSongList() {
+    // Elimina solo los botones de canciones, no el botón de subir
+    const uploadBtn = document.getElementById("upload-btn");
+    const uploadInput = document.getElementById("upload-mp3");
     songListDiv.innerHTML = "";
     songs.forEach((song, idx) => {
         const btn = document.createElement("button");
@@ -127,6 +138,9 @@ function renderSongList() {
         };
         songListDiv.appendChild(btn);
     });
+    // Vuelve a agregar el botón (+) y el input al final
+    songListDiv.appendChild(uploadInput);
+    songListDiv.appendChild(uploadBtn);
 }
 
 renderSongList();
